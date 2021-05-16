@@ -7,19 +7,7 @@ const bodyParser = require('body-parser');
 const { json } = require('body-parser');
 const { request } = require('express');
 const jsonParser = bodyParser.json();
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const cors = require('cors')
-
-const indexRouter = require('./routes/index');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,10 +16,16 @@ var con = mysql.createConnection({
     host: "localhost",
     user: "Jarvis",
     password: "187",
+    database: "telegram_bot"
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
 });
 
 app.get("/info/:chat_id", jsonParser, (req, res) => {
-    con.query("SELECT * FROM reaminder WHERE chatID = '" + req.params.chat_id + "'", function(err, ress){
+    con.query("SELECT name, Due, description FROM remainder WHERE chatID = '" + req.params.chat_id + "'", function(err, ress){
         if(err) throw err
         res.json(ress);
         console.log("All reaminders requested " + req.params.chat_id);
