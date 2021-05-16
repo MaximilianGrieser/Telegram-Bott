@@ -4,8 +4,6 @@ const port = 3000;
 const path = require('path');
 var mysql = require('mysql');
 const bodyParser = require('body-parser');
-const { json } = require('body-parser');
-const { request } = require('express');
 const jsonParser = bodyParser.json();
 const cors = require('cors')
 
